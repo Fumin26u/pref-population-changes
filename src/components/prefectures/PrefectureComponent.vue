@@ -6,6 +6,8 @@ import { ref, onMounted } from 'vue'
 
 // 都道府県一覧
 const prefectures = ref<Prefecture[]>([])
+// 選択された都道府県一覧
+const selectedPrefectures = ref<Prefecture[]>([])
 
 // viewでlabelとinputの接続のためのidを作成する
 const setPrefId = (prefs: Prefecture[]): Prefecture[] => {
@@ -40,6 +42,14 @@ onMounted(async () => {
 <template>
     <section class="pref-area">
         <div>This is PrefectureComponent.vue</div>
+        <div>
+            <p>選択している都道府県：</p>
+            <span
+                v-for="(selectedPrefecture, index) in selectedPrefectures"
+                :key="index"
+                >{{ selectedPrefecture.prefName }}</span
+            >
+        </div>
         <div class="pref-list">
             <div
                 class="prefecture"
@@ -48,7 +58,8 @@ onMounted(async () => {
             >
                 <input
                     type="checkbox"
-                    :value="prefecture.prefCode"
+                    v-model="selectedPrefectures"
+                    :value="prefecture"
                     :id="prefecture.prefId"
                 />
                 <label :for="prefecture.prefId">{{
