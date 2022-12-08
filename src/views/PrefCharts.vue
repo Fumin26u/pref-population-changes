@@ -4,7 +4,7 @@ import PrefectureComponent from '@/components/prefectures/PrefectureComponent.vu
 
 <template>
     <main>
-        <div>Hello World</div>
+        <div>This is PrefCharts.vue</div>
         <PrefectureComponent />
     </main>
 </template>

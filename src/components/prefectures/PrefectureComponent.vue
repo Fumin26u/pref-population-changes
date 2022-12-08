@@ -1,5 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import endpoint from '@/assets/ts/endpoint'
+import axios from 'axios'
+</script>
 
 <template>
-    <div>Hello World</div>
+    <div>This is PrefectureComponent.vue</div>
 </template>
