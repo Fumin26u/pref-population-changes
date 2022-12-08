@@ -47,8 +47,9 @@ onMounted(async () => {
             <span
                 v-for="(selectedPrefecture, index) in selectedPrefectures"
                 :key="index"
-                >{{ selectedPrefecture.prefName }}</span
             >
+                {{ selectedPrefecture.prefName }}
+            </span>
         </div>
         <div class="pref-list">
             <div
@@ -62,9 +63,9 @@ onMounted(async () => {
                     :value="prefecture"
                     :id="prefecture.prefId"
                 />
-                <label :for="prefecture.prefId">{{
-                    prefecture.prefName
-                }}</label>
+                <label :for="prefecture.prefId">
+                    {{ prefecture.prefName }}
+                </label>
             </div>
         </div>
     </section>
