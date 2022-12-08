@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '@/assets/css/prefectures/prefecture.css'
 import endpoint from '@/assets/ts/endpoint'
 import { Prefecture } from '@/assets/ts/interfaces/interfaces'
 import axios from '@/assets/plugins/setApiKey'
@@ -40,15 +41,14 @@ onMounted(async () => {
 
 <template>
     <section class="pref-area">
-        <div>This is PrefectureComponent.vue</div>
-        <div>
+        <div class="pref-selected">
             <p>選択している都道府県：</p>
-            <span
+            <p
                 v-for="(selectedPrefecture, index) in selectedPrefectures"
                 :key="index"
             >
                 {{ selectedPrefecture.prefName }}
-            </span>
+            </p>
         </div>
         <div class="pref-list">
             <div

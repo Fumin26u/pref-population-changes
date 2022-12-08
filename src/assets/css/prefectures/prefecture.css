@@ -1,1 +1,25 @@
 @import '../style.css';
+/* -------------------- 
+
+    都道府県一覧
+
+-------------------- */
+@media (min-width: 900px) {
+    .pref-area {
+        width: 33%;
+    }
+}
+
+.pref-selected p {
+    display: inline-block;
+}
+        
+.pref-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.pref-list > .prefecture {
+    width: 33%;
+}
