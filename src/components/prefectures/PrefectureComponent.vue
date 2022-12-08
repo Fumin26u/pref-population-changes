@@ -11,7 +11,6 @@ const selectedPrefectures = ref<Prefecture[]>([])
 
 // viewでlabelとinputの接続のためのidを作成する
 const setPrefId = (prefs: Prefecture[]): Prefecture[] => {
-    console.log(prefs)
     prefs.map((pref: Prefecture, index: number) => {
         prefs[index]['prefId'] = 'pref_' + pref.prefCode
     })
