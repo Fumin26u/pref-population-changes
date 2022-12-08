@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import endpoint from '@/assets/ts/endpoint'
+import { Prefectures } from '@/assets/ts/interfaces/interfaces'
 import axios from '@/assets/plugins/setApiKey'
 import { ref, onMounted } from 'vue'
 
 // 都道府県一覧
-const prefectures = ref<any>([])
+const prefectures = ref<Prefectures[]>([])
 
 // APIから都道府県一覧を取得する
 const getPrefectures = async () => {
