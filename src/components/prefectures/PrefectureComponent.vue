@@ -1,19 +1,28 @@
 <script setup lang="ts">
 import endpoint from '@/assets/ts/endpoint'
-import { Prefectures } from '@/assets/ts/interfaces/interfaces'
+import { Prefecture } from '@/assets/ts/interfaces/interfaces'
 import axios from '@/assets/plugins/setApiKey'
 import { ref, onMounted } from 'vue'
 
 // 都道府県一覧
-const prefectures = ref<Prefectures[]>([])
+const prefectures = ref<Prefecture[]>([])
+
+// viewでlabelとinputの接続のためのidを作成する
+const setPrefId = (prefs: Prefecture[]): Prefecture[] => {
+    console.log(prefs)
+    prefs.map((pref: Prefecture, index: number) => {
+        prefs[index]['prefId'] = 'pref_' + pref.prefCode
+    })
+    return prefs
+}
 
 // APIから都道府県一覧を取得する
-const getPrefectures = async () => {
+const getPrefectures = async (): Promise<Prefecture[]> => {
     const url = endpoint + 'api/v1/prefectures'
     return await axios
         .get(url)
         .then((response) => {
-            return response.data
+            return response.data.result
         })
         .catch((error) => {
             console.log(error)
@@ -23,11 +32,29 @@ const getPrefectures = async () => {
 
 // 画面読み込み時、取得した都道府県一覧をRefオブジェクトに挿入
 onMounted(async () => {
-    prefectures.value = await getPrefectures()
+    prefectures.value = setPrefId(await getPrefectures())
     console.log(prefectures.value)
 })
 </script>
 
 <template>
-    <div>This is PrefectureComponent.vue</div>
+    <section class="pref-area">
+        <div>This is PrefectureComponent.vue</div>
+        <div class="pref-list">
+            <div
+                class="prefecture"
+                v-for="prefecture in prefectures"
+                :key="prefecture.prefCode"
+            >
+                <input
+                    type="checkbox"
+                    :value="prefecture.prefCode"
+                    :id="prefecture.prefId"
+                />
+                <label :for="prefecture.prefId">{{
+                    prefecture.prefName
+                }}</label>
+            </div>
+        </div>
+    </section>
 </template>
