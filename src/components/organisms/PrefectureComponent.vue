@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import '@/assets/css/prefectures/prefecture.css'
 import endpoint from '@/assets/ts/endpoint'
-import { Prefecture } from '@/assets/ts/interfaces/interfaces'
+import { Prefecture, PopulationInfo } from '@/assets/ts/interfaces/interfaces'
 import axios from '@/assets/plugins/setApiKey'
 import { ref, onMounted } from 'vue'
 
@@ -15,7 +15,7 @@ const prefectures = ref<Prefecture[]>([])
 // 選択された都道府県一覧
 const selectedPrefectures = ref<Prefecture[]>([])
 // 都道府県の人口情報
-const prefPopulation = ref<any>([])
+const prefPopulation = ref<Prefecture[]>([])
 
 // 都道府県の更新差分を取得
 const getPrefDiffs = (
@@ -25,7 +25,7 @@ const getPrefDiffs = (
     return newPrefs.filter((pref) => prevPrefs.indexOf(pref) === -1)
 }
 
-// 都道府県をコード順にソートしたものを取得
+// 都道府県データをコード順にソートしたものを取得
 const sortPrefCodeAsc = (prefs: Prefecture[]): Prefecture[] => {
     const sortedPrefs = prefs.sort((prev, next) => {
         return prev.prefCode > next.prefCode ? 1 : -1
@@ -33,16 +33,47 @@ const sortPrefCodeAsc = (prefs: Prefecture[]): Prefecture[] => {
     return sortedPrefs
 }
 
-// 都道府県の選択状態を監視し、変更がなされた場合一覧をソートし、更新差分を取得
-const onSelectPrefecture = (pref: Prefecture) => {
+// APIから指定された都道府県の人口情報を取得する
+const getPrefPopulation = async (
+    prefCode: number
+): Promise<PopulationInfo[]> => {
+    const url = endpoint + 'api/v1/population/composition/perYear'
+    return await axios
+        .get(url, {
+            params: {
+                prefCode: prefCode,
+                cityCode: '-',
+            },
+        })
+        .then((response) => {
+            // 利用するのは人口データのみなのでそれを返す
+            return response.data.result.data
+        })
+        .catch((error) => {
+            console.log(error)
+            return
+        })
+}
+
+// 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
+const onSelectPrefecture = async (pref: Prefecture) => {
     const prefIndex = selectedPrefectures.value.indexOf(pref)
+    // checkboxで選択が解除された場合削除
     if (prefIndex !== -1) {
         selectedPrefectures.value.splice(prefIndex, 1)
+        prefPopulation.value.splice(prefIndex, 1)
     } else {
+        // 選択された場合人口情報と選択された都道府県一覧にデータを追加しソート
         selectedPrefectures.value.push(pref)
         selectedPrefectures.value = sortPrefCodeAsc(selectedPrefectures.value)
+
+        prefPopulation.value.push({
+            ...pref,
+            population: await getPrefPopulation(pref.prefCode),
+        })
+        prefPopulation.value = sortPrefCodeAsc(prefPopulation.value)
+        console.log(prefPopulation.value)
     }
-    console.log(selectedPrefectures.value)
 }
 
 // viewでlabelとinputの接続のためのidを作成する
@@ -95,7 +126,7 @@ onMounted(async () => {
                     v-model="selectedPrefectures"
                     :value="prefecture"
                     :id="prefecture.prefId"
-                    @change="onSelectPrefecture(prefecture)"
+                    @click="onSelectPrefecture(prefecture)"
                 />
                 <label :for="prefecture.prefId">
                     {{ prefecture.prefName }}

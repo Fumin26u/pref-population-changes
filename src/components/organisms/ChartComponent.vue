@@ -11,25 +11,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
-// 指定した都道府県の人口情報をAPIから取得して挿入する
-const getPrefPopulation = async (prefCode: number): Promise<any> => {
-    const url = endpoint + 'api/v1/population/composition/perYear'
-    return await axios
-        .get(url, {
-            params: {
-                prefCode: prefCode,
-                cityCode: '-',
-            },
-        })
-        .then((response) => {
-            return response.data.result
-        })
-        .catch((error) => {
-            console.log(error)
-            return
-        })
-}
 </script>
 <template>
     <section class="chart-area">
