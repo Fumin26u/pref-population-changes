@@ -3,22 +3,21 @@ import '@/assets/css/prefCharts.css'
 import HeaderComponent from '@/components/organisms/HeaderComponent.vue'
 import PrefectureComponent from '@/components/organisms/PrefectureComponent.vue'
 import ChartComponent from '@/components/organisms/ChartComponent.vue'
-import { Prefecture } from '@/assets/ts/interfaces/interfaces'
+import { PrefInfo } from '@/assets/ts/interfaces/interfaces'
 import { ref } from 'vue'
 
-// 選択された都道府県一覧
-const selectedPrefectures = ref<Prefecture[]>([])
-// 選択された都道府県の更新差分
-const prefDiffs = ref<Prefecture>()
+// 都道府県の人口情報
+const prefPopulation = ref<PrefInfo[]>([])
+// 子コンポーネントから送られた都道府県の人口情報を設定
+const setPrefPopulation = (prefPopulations: PrefInfo[]): void => {
+    prefPopulation.value = prefPopulations
+}
 </script>
 
 <template>
     <HeaderComponent />
     <main class="main-content">
-        <PrefectureComponent />
-        <ChartComponent
-            :selectedPrefectures="selectedPrefectures"
-            :prefDiffs="prefDiffs"
-        />
+        <PrefectureComponent @setPrefPopulation="setPrefPopulation" />
+        <ChartComponent :prefPopulation="prefPopulation" />
     </main>
 </template>

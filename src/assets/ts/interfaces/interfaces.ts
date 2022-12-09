@@ -8,7 +8,7 @@ export interface PopulationInfo {
     data: PopulationByAge[]
 }
 
-export interface Prefecture {
+export interface PrefInfo {
     prefCode: number
     prefName: string
     prefId: string

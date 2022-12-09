@@ -1,19 +1,23 @@
 <script setup lang="ts">
 import '@/assets/css/charts/chart.css'
-import endpoint from '@/assets/ts/endpoint'
-import { Prefecture } from '@/assets/ts/interfaces/interfaces'
-import axios from '@/assets/plugins/setApiKey'
+import { PrefInfo } from '@/assets/ts/interfaces/interfaces'
 import { ref, toRefs, watch } from 'vue'
 
 interface Props {
-    selectedPrefectures: Prefecture[]
-    prefDiffs: Prefecture | undefined
+    prefPopulation: PrefInfo[]
 }
 
 const props = defineProps<Props>()
+
+const { prefPopulation } = toRefs(props)
+const prefInfo = ref<PrefInfo[]>([])
+watch(prefPopulation, () => {
+    prefInfo.value = prefPopulation.value
+    console.log(prefInfo.value)
+})
 </script>
 <template>
     <section class="chart-area">
-        {{ selectedPrefectures }}
+        {{ prefInfo }}
     </section>
 </template>

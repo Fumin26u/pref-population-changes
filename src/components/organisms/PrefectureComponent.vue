@@ -1,32 +1,24 @@
 <script setup lang="ts">
 import '@/assets/css/prefectures/prefecture.css'
 import endpoint from '@/assets/ts/endpoint'
-import { Prefecture, PopulationInfo } from '@/assets/ts/interfaces/interfaces'
+import { PrefInfo, PopulationInfo } from '@/assets/ts/interfaces/interfaces'
 import axios from '@/assets/plugins/setApiKey'
 import { ref, onMounted } from 'vue'
 
-// interface Emits {
-//     (emit: 'onSelectPrefecture', pref: Prefecture[]): void
-// }
-// const emit = defineEmits<Emits>()
+interface Emits {
+    (emit: 'setPrefPopulation', prefPopulations: PrefInfo[]): void
+}
+const emit = defineEmits<Emits>()
 
 // 都道府県一覧
-const prefectures = ref<Prefecture[]>([])
+const prefectures = ref<PrefInfo[]>([])
 // 選択された都道府県一覧
-const selectedPrefectures = ref<Prefecture[]>([])
+const selectedPrefectures = ref<PrefInfo[]>([])
 // 都道府県の人口情報
-const prefPopulation = ref<Prefecture[]>([])
-
-// 都道府県の更新差分を取得
-const getPrefDiffs = (
-    prevPrefs: Prefecture[],
-    newPrefs: Prefecture[]
-): Prefecture[] => {
-    return newPrefs.filter((pref) => prevPrefs.indexOf(pref) === -1)
-}
+const prefPopulation = ref<PrefInfo[]>([])
 
 // 都道府県データをコード順にソートしたものを取得
-const sortPrefCodeAsc = (prefs: Prefecture[]): Prefecture[] => {
+const sortPrefCodeAsc = (prefs: PrefInfo[]): PrefInfo[] => {
     const sortedPrefs = prefs.sort((prev, next) => {
         return prev.prefCode > next.prefCode ? 1 : -1
     })
@@ -56,7 +48,7 @@ const getPrefPopulation = async (
 }
 
 // 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
-const onSelectPrefecture = async (pref: Prefecture) => {
+const onSelectPrefecture = async (pref: PrefInfo) => {
     const prefIndex = selectedPrefectures.value.indexOf(pref)
     // checkboxで選択が解除された場合削除
     if (prefIndex !== -1) {
@@ -72,20 +64,21 @@ const onSelectPrefecture = async (pref: Prefecture) => {
             population: await getPrefPopulation(pref.prefCode),
         })
         prefPopulation.value = sortPrefCodeAsc(prefPopulation.value)
-        console.log(prefPopulation.value)
     }
+
+    emit('setPrefPopulation', prefPopulation.value)
 }
 
 // viewでlabelとinputの接続のためのidを作成する
-const setPrefId = (prefs: Prefecture[]): Prefecture[] => {
-    prefs.map((pref: Prefecture, index: number) => {
+const setPrefId = (prefs: PrefInfo[]): PrefInfo[] => {
+    prefs.map((pref: PrefInfo, index: number) => {
         prefs[index]['prefId'] = 'pref_' + pref.prefCode
     })
     return prefs
 }
 
 // APIから都道府県一覧を取得する
-const getPrefectures = async (): Promise<Prefecture[]> => {
+const getPrefectures = async (): Promise<PrefInfo[]> => {
     const url = endpoint + 'api/v1/prefectures'
     return await axios
         .get(url)
