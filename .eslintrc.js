@@ -9,6 +9,10 @@ module.exports = {
         '@vue/typescript/recommended',
         'plugin:prettier/recommended',
     ],
+    globals: {
+        defineProps: 'readonly',
+        defineEmits: 'readonly',
+    },
     parserOptions: {
         ecmaVersion: 2020,
     },
