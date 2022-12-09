@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import '@/assets/css/prefCharts.css'
+import HeaderComponent from '@/components/organisms/HeaderComponent.vue'
 import PrefectureComponent from '@/components/organisms/PrefectureComponent.vue'
 import ChartComponent from '@/components/organisms/ChartComponent.vue'
 import { Prefecture } from '@/assets/ts/interfaces/interfaces'
@@ -34,6 +35,7 @@ const onSelectPrefecture = (prefs: Prefecture[]): void => {
 </script>
 
 <template>
+    <HeaderComponent />
     <main class="main-content">
         <PrefectureComponent @onSelectPrefecture="onSelectPrefecture" />
         <ChartComponent
