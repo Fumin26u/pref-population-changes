@@ -8,7 +8,7 @@ import { ref } from 'vue'
 // 選択された都道府県一覧
 const selectedPrefectures = ref<Prefecture[]>([])
 // 選択された都道府県の更新差分
-const prefDiffs = ref<Prefecture[]>([])
+const prefDiffs = ref<Prefecture>()
 
 // 都道府県の更新差分を取得
 const getPrefDiffs = (
@@ -28,7 +28,7 @@ const getPrefCodeAsc = (prefs: Prefecture[]): Prefecture[] => {
 
 // 子コンポーネントの都道府県一覧のチェックボックスの選択内容を反映
 const onSelectPrefecture = (prefs: Prefecture[]): void => {
-    prefDiffs.value = getPrefDiffs(selectedPrefectures.value, prefs)
+    prefDiffs.value = getPrefDiffs(selectedPrefectures.value, prefs)[0]
     selectedPrefectures.value = getPrefCodeAsc(prefs)
 }
 </script>

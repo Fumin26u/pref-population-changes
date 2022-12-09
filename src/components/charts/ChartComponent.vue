@@ -7,7 +7,7 @@ import { ref, toRefs, watch } from 'vue'
 
 interface Props {
     selectedPrefectures: Prefecture[]
-    prefDiffs: Prefecture[]
+    prefDiffs: Prefecture | undefined
 }
 
 const props = defineProps<Props>()
@@ -20,11 +20,8 @@ const { prefDiffs } = toRefs(props)
 const prefPopulation = ref<any>([])
 
 // 指定した都道府県の人口情報をAPIから取得して挿入する
-const getPopulationInfo = async (
-    url: string,
-    prefCode: number
-): Promise<any> => {
-    console.log(url, prefCode)
+const getPrefPopulation = async (prefCode: number): Promise<any> => {
+    const url = endpoint + 'api/v1/population/composition/perYear'
     return await axios
         .get(url, {
             params: {
@@ -41,19 +38,14 @@ const getPopulationInfo = async (
         })
 }
 
-const getPrefPopulation = async (prefs: Prefecture[]): Promise<any> => {
-    const url = endpoint + 'api/v1/population/composition/perYear'
-    const populations: any = []
-
-    prefs.map(async (pref) => {
-        populations.push(await getPopulationInfo(url, pref.prefCode))
-    })
-
-    return await populations
-}
 watch(selectedPrefectures, async () => {
-    prefPopulation.value.push(await getPrefPopulation(prefDiffs.value))
-    // console.log(prefPopulation.value)
+    console.log(prefDiffs.value)
+    if (prefDiffs.value !== undefined) {
+        prefPopulation.value.push(
+            await getPrefPopulation(prefDiffs.value.prefCode)
+        )
+        console.log(prefPopulation.value)
+    }
 })
 </script>
 <template>
