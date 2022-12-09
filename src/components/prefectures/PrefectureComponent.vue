@@ -3,12 +3,21 @@ import '@/assets/css/prefectures/prefecture.css'
 import endpoint from '@/assets/ts/endpoint'
 import { Prefecture } from '@/assets/ts/interfaces/interfaces'
 import axios from '@/assets/plugins/setApiKey'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
+
+interface Emits {
+    (emit: 'onSelectPrefecture', pref: Prefecture[]): void
+}
+
+const emit = defineEmits<Emits>()
 
 // 都道府県一覧
 const prefectures = ref<Prefecture[]>([])
 // 選択された都道府県一覧
 const selectedPrefectures = ref<Prefecture[]>([])
+
+// 都道府県の選択状態を監視し、変更がなされた場合親コンポーネントに送る
+watchEffect(() => emit('onSelectPrefecture', selectedPrefectures.value))
 
 // viewでlabelとinputの接続のためのidを作成する
 const setPrefId = (prefs: Prefecture[]): Prefecture[] => {
@@ -35,7 +44,6 @@ const getPrefectures = async (): Promise<Prefecture[]> => {
 // 画面読み込み時、取得した都道府県一覧をRefオブジェクトに挿入
 onMounted(async () => {
     prefectures.value = setPrefId(await getPrefectures())
-    console.log(prefectures.value)
 })
 </script>
 
