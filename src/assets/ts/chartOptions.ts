@@ -1,4 +1,4 @@
-const chart = {
+const chartOptions = {
     title: {
         text: '都道府県の人口動態',
     },
@@ -50,4 +50,4 @@ const chart = {
     },
 }
 
-export default chart
+export default chartOptions
