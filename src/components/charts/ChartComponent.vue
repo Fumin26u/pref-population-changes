@@ -10,9 +10,15 @@ interface Props {
 const props = defineProps<Props>()
 
 const prefectures = ref<Prefecture[]>([])
-watchEffect(() => (prefectures.value = props.selectedPrefectures))
+// 親コンポーネントから渡った都道府県一覧を挿入し、コード順にソート
+watchEffect(() => {
+    const unSortPrefs = props.selectedPrefectures
+    prefectures.value = unSortPrefs.sort((prevPref, nextPref) => {
+        return prevPref.prefCode > nextPref.prefCode ? 1 : -1
+    })
+})
 </script>
-<template lang="">
+<template>
     <section class="chart-area">
         {{ prefectures }}
     </section>
