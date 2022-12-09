@@ -11,13 +11,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-// Propsで送られた選択された都道府県一覧
-const { selectedPrefectures } = toRefs(props)
-// 都道府県の更新差分
-const { prefDiffs } = toRefs(props)
-
-// 都道府県の人口情報
-const prefPopulation = ref<any>([])
 
 // 指定した都道府県の人口情報をAPIから取得して挿入する
 const getPrefPopulation = async (prefCode: number): Promise<any> => {
@@ -37,16 +30,6 @@ const getPrefPopulation = async (prefCode: number): Promise<any> => {
             return
         })
 }
-
-watch(selectedPrefectures, async () => {
-    console.log(prefDiffs.value)
-    if (prefDiffs.value !== undefined) {
-        prefPopulation.value.push(
-            await getPrefPopulation(prefDiffs.value.prefCode)
-        )
-        console.log(prefPopulation.value)
-    }
-})
 </script>
 <template>
     <section class="chart-area">
