@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import '@/assets/css/charts/chart.css'
 import chartOptions from '@/assets/ts/chartOptions'
+import VueHighcharts from 'vue3-highcharts'
 import { PrefInfo, PrefCharts } from '@/assets/ts/interfaces/interfaces'
 import { ref, toRefs, watchEffect, nextTick } from 'vue'
 
@@ -39,6 +40,7 @@ const forceRenderer = async () => {
 watchEffect(() => {
     chartOptions.series = generatePrefCharts(prefPopulation.value)
     forceRenderer()
+    console.log(prefPopulation.value)
 })
 </script>
 <template>
