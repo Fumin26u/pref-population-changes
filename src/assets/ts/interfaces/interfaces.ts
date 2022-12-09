@@ -16,6 +16,6 @@ export interface PrefInfo {
 }
 
 export interface PrefCharts {
-    name: string
+    label: string
     data: number[]
 }
