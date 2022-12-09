@@ -15,7 +15,7 @@ const { prefPopulation } = toRefs(props)
 
 // グラフ描画用の人口情報を生成
 const generatePrefCharts = (prefs: PrefInfo[]): PrefCharts[] => {
-    const chartData = prefs.map((pref) => {
+    return prefs.map((pref) => {
         const populationList =
             pref.population === undefined
                 ? []
@@ -26,8 +26,6 @@ const generatePrefCharts = (prefs: PrefInfo[]): PrefCharts[] => {
             data: populationList,
         }
     })
-
-    return chartData
 }
 
 // チャートを強制更新する
