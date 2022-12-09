@@ -1,9 +1,9 @@
-const charts = {
+const chart = {
     title: {
         text: '都道府県の人口動態',
     },
     xAxis: {
-        categories: [...Array(14)].map((_, index) => 1980 + index * 5),
+        categories: [...Array(18)].map((_, index) => 1960 + index * 5),
     },
     yAxis: {
         title: {
@@ -26,6 +26,12 @@ const charts = {
         verticalAlign: 'middle',
         borderWidth: 0,
     },
+    series: [
+        {
+            name: '',
+            data: [0],
+        },
+    ],
     responsive: {
         rules: [
             {
@@ -44,4 +50,4 @@ const charts = {
     },
 }
 
-export default charts
+export default chart

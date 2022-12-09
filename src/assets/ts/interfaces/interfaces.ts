@@ -14,3 +14,8 @@ export interface PrefInfo {
     prefId: string
     population?: PopulationInfo[]
 }
+
+export interface PrefCharts {
+    name: string
+    data: number[]
+}
