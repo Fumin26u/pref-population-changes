@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import '@/assets/css/charts/chart.css'
 import HighCharts from 'highcharts'
+import charts from '@/assets/ts/charts'
 import { PrefInfo } from '@/assets/ts/interfaces/interfaces'
 import { computed } from 'vue'
 
