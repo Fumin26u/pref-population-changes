@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import '@/assets/css/charts/chart.css'
-import Highcharts from 'highcharts'
+import VueHighcharts from 'vue3-highcharts'
 // import chartOptions from '@/assets/ts/chartOptions'
+import TestComponent from './TestComponent.vue'
 import { PrefInfo, PrefCharts } from '@/assets/ts/interfaces/interfaces'
-import { ref, toRefs, watchEffect, computed, getCurrentInstance } from 'vue'
+import { ref, toRefs, watchEffect, computed } from 'vue'
 
 interface Props {
     prefPopulation: PrefInfo[]
@@ -79,17 +80,17 @@ const generatePrefCharts = (prefs: PrefInfo[]): PrefCharts[] => {
 }
 
 // 都道府県人口情報が更新された際チャートを更新
-const chartCanvas: Highcharts.Chart = Highcharts.chart('chart', chartOptions.value)
 watchEffect(() => {
     prefCharts.value.splice(0)
     generatePrefCharts(prefPopulation.value).map((pref) => {
         prefCharts.value.push(pref)
     })
-    chartCanvas.redraw()
+    console.log(chartOptions.value.series)
 })
 </script>
 <template>
     <section class="chart-area">
-        <div id="chart"></div>
+        <VueHighcharts type="chart" :options="chartOptions" />
+        <TestComponent :options="chartOptions" />
     </section>
 </template>
