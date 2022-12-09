@@ -14,6 +14,8 @@ const prefInfo = computed(() => props.prefPopulation)
 </script>
 <template>
     <section class="chart-area">
-        {{ prefInfo }}
+        <p v-for="pref in prefInfo" :key="pref.prefCode">
+            {{ pref.prefCode + ': ' + pref.prefName }}
+        </p>
     </section>
 </template>
