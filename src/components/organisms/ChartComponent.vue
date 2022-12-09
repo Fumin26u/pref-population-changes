@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import '@/assets/css/charts/chart.css'
-import VueHighcharts from 'vue3-highcharts'
 import chartOptions from '@/assets/ts/chartOptions'
 import { PrefInfo, PrefCharts } from '@/assets/ts/interfaces/interfaces'
 import { toRefs, watchEffect } from 'vue'
@@ -38,6 +37,5 @@ watchEffect(() => {
 <template>
     <section class="chart-area">
         {{ chartOptions.series }}
-        <VueHighcharts type="chart" :options="chartOptions" />
     </section>
 </template>
