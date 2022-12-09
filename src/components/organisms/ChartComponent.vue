@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import '@/assets/css/charts/chart.css'
+import HighCharts from 'highcharts'
 import { PrefInfo } from '@/assets/ts/interfaces/interfaces'
-import { ref, toRefs, watch } from 'vue'
+import { computed } from 'vue'
 
 interface Props {
     prefPopulation: PrefInfo[]
 }
 
 const props = defineProps<Props>()
-
-const { prefPopulation } = toRefs(props)
-const prefInfo = ref<PrefInfo[]>([])
-watch(prefPopulation, () => {
-    prefInfo.value = prefPopulation.value
-    console.log(prefInfo.value)
-})
+// 都道府県とその人口情報
+const prefInfo = computed(() => props.prefPopulation)
 </script>
 <template>
     <section class="chart-area">

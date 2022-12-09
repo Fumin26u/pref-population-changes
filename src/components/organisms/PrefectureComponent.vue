@@ -99,15 +99,6 @@ onMounted(async () => {
 
 <template>
     <section class="pref-area">
-        <div class="pref-selected">
-            <p>選択している都道府県：</p>
-            <p
-                v-for="(selectedPrefecture, index) in selectedPrefectures"
-                :key="index"
-            >
-                {{ selectedPrefecture.prefName }}
-            </p>
-        </div>
         <div class="pref-list">
             <div
                 class="prefecture"
