@@ -21,11 +21,14 @@ const prefectures = ref<Pref[]>([])
 const selectedPrefectures = ref<Pref[]>([])
 // 都道府県の人口情報
 const prefPopulation = ref<PrefInfo[]>([])
+// 表示する人口の種類
+const populationType = ref<string>('0')
 
 // APIから指定された都道府県の人口情報を取得する
 const getPrefPopulation = async (
-    prefCode: number
-): Promise<PopulationInfo[]> => {
+    prefCode: number,
+    type: number
+): Promise<PopulationInfo> => {
     const url = endpoint + 'api/v1/population/composition/perYear'
     const prefInfo = await getPrefInfo(url, {
         params: {
@@ -34,7 +37,8 @@ const getPrefPopulation = async (
         },
     })
 
-    return prefInfo.data
+    console.log(prefInfo.data[type])
+    return prefInfo.data[type]
 }
 
 // 配列が都道府県コード順になるように該当の都道府県の挿入位置を取得する
@@ -64,7 +68,10 @@ const onSelectPrefecture = async (pref: Pref) => {
             0,
             {
                 ...pref,
-                population: await getPrefPopulation(pref.prefCode),
+                population: await getPrefPopulation(
+                    pref.prefCode,
+                    parseInt(populationType.value)
+                ),
             }
         )
     }
@@ -103,6 +110,36 @@ onMounted(async () => {
                 :selectedPrefectures="selectedPrefectures"
                 @onSelectPrefecture="onSelectPrefecture"
             />
+        </div>
+        <div class="population-type-select">
+            <input
+                type="radio"
+                value="0"
+                v-model="populationType"
+                id="population-type-0"
+            />
+            <label for="population-type-0">総人口</label>
+            <input
+                type="radio"
+                value="1"
+                v-model="populationType"
+                id="population-type-1"
+            />
+            <label for="population-type-1">年少人口</label>
+            <input
+                type="radio"
+                value="2"
+                v-model="populationType"
+                id="population-type-2"
+            />
+            <label for="population-type-2">生産年齢人口</label>
+            <input
+                type="radio"
+                value="3"
+                v-model="populationType"
+                id="population-type-3"
+            />
+            <label for="population-type-3">老齢人口</label>
         </div>
     </section>
 </template>
