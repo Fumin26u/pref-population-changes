@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import '@/assets/css/prefectures/prefecture.css'
 import { PrefInfo } from '@/assets/ts/interfaces/interfaces'
+import { toRefs } from 'vue'
 
 interface Props {
     prefectures: PrefInfo[]
+    selectedPrefectures: PrefInfo[]
 }
 
 interface Emits {
@@ -11,8 +14,16 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
+
+const { prefectures } = toRefs(props)
+const { selectedPrefectures } = toRefs(props)
+
+// 都道府県の選択状態に変更があった場合、PrefectureComponentに選択した都道府県を送る
+const onSelectPrefecture = (pref: PrefInfo): void => {
+    emit('onSelectPrefecture', pref)
+}
 </script>
-<template lang="">
+<template>
     <div
         class="prefecture"
         v-for="prefecture in prefectures"

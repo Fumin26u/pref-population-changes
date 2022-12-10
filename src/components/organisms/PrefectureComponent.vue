@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import '@/assets/css/prefectures/prefecture.css'
+import PrefectureList from '@/components/molecules/PrefectureList.vue'
 import endpoint from '@/assets/ts/endpoint'
 import { PrefInfo, PopulationInfo } from '@/assets/ts/interfaces/interfaces'
 import axios from '@/assets/plugins/setApiKey'
@@ -100,22 +101,11 @@ onMounted(async () => {
 <template>
     <section class="pref-area">
         <div class="pref-list">
-            <div
-                class="prefecture"
-                v-for="prefecture in prefectures"
-                :key="prefecture.prefCode"
-            >
-                <input
-                    type="checkbox"
-                    v-model="selectedPrefectures"
-                    :value="prefecture"
-                    :id="prefecture.prefId"
-                    @click="onSelectPrefecture(prefecture)"
-                />
-                <label :for="prefecture.prefId">
-                    {{ prefecture.prefName }}
-                </label>
-            </div>
+            <PrefectureList
+                :prefectures="prefectures"
+                :selectedPrefectures="selectedPrefectures"
+                @onSelectPrefecture="onSelectPrefecture"
+            />
         </div>
     </section>
 </template>
