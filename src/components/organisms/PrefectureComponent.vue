@@ -2,6 +2,7 @@
 import '@/assets/css/prefectures/prefecture.css'
 import PrefectureList from '@/components/molecules/PrefectureList.vue'
 import endpoint from '@/assets/ts/endpoint'
+import getPrefInfo from '@/components/api/getPrefInfo'
 import { PrefInfo, PopulationInfo } from '@/assets/ts/interfaces/interfaces'
 import axios from '@/assets/plugins/setApiKey'
 import { ref, onMounted } from 'vue'
@@ -18,34 +19,27 @@ const selectedPrefectures = ref<PrefInfo[]>([])
 // 都道府県の人口情報
 const prefPopulation = ref<PrefInfo[]>([])
 
-// 都道府県データをコード順にソートしたものを取得
-const sortByPrefCodeAsc = (prefs: PrefInfo[]): PrefInfo[] => {
-    const sortedPrefs = prefs.sort((prev, next) => {
-        return prev.prefCode > next.prefCode ? 1 : -1
-    })
-    return sortedPrefs
-}
-
 // APIから指定された都道府県の人口情報を取得する
 const getPrefPopulation = async (
     prefCode: number
 ): Promise<PopulationInfo[]> => {
     const url = endpoint + 'api/v1/population/composition/perYear'
-    return await axios
-        .get(url, {
-            params: {
-                prefCode: prefCode,
-                cityCode: '-',
-            },
-        })
-        .then((response) => {
-            // 利用するのは人口データのみなのでそれを返す
-            return response.data.result.data
-        })
-        .catch((error) => {
-            console.log(error)
-            return
-        })
+    const prefInfo = await getPrefInfo(url, {
+        params: {
+            prefCode: prefCode,
+            cityCode: '-',
+        },
+    })
+
+    return prefInfo.data
+}
+
+// 配列が都道府県コード順になるように該当の都道府県の挿入位置を取得する
+const getPushPrefInfoAt = (prefs: PrefInfo[], target: PrefInfo): number => {
+    const index = prefs.findIndex(
+        (prefInfo) => prefInfo.prefCode > target.prefCode
+    )
+    return index !== -1 ? index : prefs.length
 }
 
 // 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
@@ -56,15 +50,20 @@ const onSelectPrefecture = async (pref: PrefInfo) => {
         selectedPrefectures.value.splice(prefIndex, 1)
         prefPopulation.value.splice(prefIndex, 1)
     } else {
-        // 選択された場合人口情報と選択された都道府県一覧にデータを追加しソート
-        selectedPrefectures.value.push(pref)
-        selectedPrefectures.value = sortByPrefCodeAsc(selectedPrefectures.value)
-
-        prefPopulation.value.push({
-            ...pref,
-            population: await getPrefPopulation(pref.prefCode),
-        })
-        prefPopulation.value = sortByPrefCodeAsc(prefPopulation.value)
+        // 選択された場合人口情報と選択都道府県一覧の指定位置にデータを追加
+        selectedPrefectures.value.splice(
+            getPushPrefInfoAt(selectedPrefectures.value, pref),
+            0,
+            pref
+        )
+        prefPopulation.value.splice(
+            getPushPrefInfoAt(selectedPrefectures.value, pref),
+            0,
+            {
+                ...pref,
+                population: await getPrefPopulation(pref.prefCode),
+            }
+        )
     }
 
     emit('setPrefPopulation', prefPopulation.value)
@@ -81,15 +80,7 @@ const setPrefId = (prefs: PrefInfo[]): PrefInfo[] => {
 // APIから都道府県一覧を取得する
 const getPrefectures = async (): Promise<PrefInfo[]> => {
     const url = endpoint + 'api/v1/prefectures'
-    return await axios
-        .get(url)
-        .then((response) => {
-            return response.data.result
-        })
-        .catch((error) => {
-            console.log(error)
-            return
-        })
+    return await getPrefInfo(url)
 }
 
 // 画面読み込み時、取得した都道府県一覧をRefオブジェクトに挿入

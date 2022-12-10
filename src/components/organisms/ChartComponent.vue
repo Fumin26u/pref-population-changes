@@ -40,7 +40,6 @@ const forceRenderer = async () => {
 watchEffect(() => {
     chartOptions.series = generatePrefCharts(prefPopulation.value)
     forceRenderer()
-    console.log(prefPopulation.value)
 })
 </script>
 <template>
