@@ -40,3 +40,6 @@ input[type="checkbox"], input[type="radio"], label {
     display: inline-block;
     vertical-align: middle;
 }
+input[type="checkbox"], input[type="radio"] {
+    margin: 0 2px;
+}

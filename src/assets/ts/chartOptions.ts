@@ -4,6 +4,7 @@ const chartOptions = {
             minWidth: 600,
             scrollPositionX: 1,
         },
+        height: 450,
     },
     title: {
         text: '',
@@ -53,6 +54,16 @@ const chartOptions = {
                     legend: {
                         align: 'center',
                         verticalAlign: 'bottom',
+                    },
+                },
+            },
+            {
+                condition: {
+                    maxWidth: 600,
+                },
+                chartOptions: {
+                    chart: {
+                        height: 300,
                     },
                 },
             },

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import '@/assets/css/organisms/chart.css'
 import chartOptions from '@/assets/ts/chartOptions'
+import PopulationTypes from '@/components/molecules/PopulationTypes.vue'
 import VueHighcharts from 'vue3-highcharts'
 import { PrefInfo, PrefCharts } from '@/assets/ts/interfaces/interfaces'
 import { ref, toRefs, watchEffect, nextTick } from 'vue'
@@ -8,15 +9,25 @@ import { ref, toRefs, watchEffect, nextTick } from 'vue'
 interface Props {
     prefPopulation: PrefInfo[]
 }
-
 const props = defineProps<Props>()
+
 // 都道府県人口情報
 const { prefPopulation } = toRefs(props)
 
+// 表示する人口の種類
+const populationType = ref<number>(0)
+const populationName = ref<string>('総人口')
+
+// 人口の種類のラジオボタンが変更された際、グラフとタイトルの表示を変更
+const setPopulationType = (popuType: { [key: string]: string }): void => {
+    populationType.value = parseInt(popuType.type)
+    populationName.value = popuType.name
+}
+
 // グラフ描画用の人口情報を生成
-const generatePrefCharts = (prefs: PrefInfo[]): PrefCharts[] => {
+const generatePrefCharts = (prefs: PrefInfo[], type: number): PrefCharts[] => {
     return prefs.map((pref) => {
-        const populationList = pref.population[0].data.map((v) => v.value)
+        const populationList = pref.population[type].data.map((v) => v.value)
 
         return {
             name: pref.prefName,
@@ -35,13 +46,17 @@ const forceRenderer = async () => {
 
 // 都道府県人口情報が更新された際チャートを更新
 watchEffect(() => {
-    chartOptions.series = generatePrefCharts(prefPopulation.value)
+    chartOptions.series = generatePrefCharts(
+        prefPopulation.value,
+        populationType.value
+    )
     forceRenderer()
 })
 </script>
 <template>
     <section class="chart-area">
-        <h2>選択した都道府県の年別人口変化</h2>
+        <h2>選択した都道府県の{{ populationName }}統計</h2>
+        <PopulationTypes @setPopulationType="setPopulationType" />
         <div class="chart-detail">
             <VueHighcharts
                 class="chart"
