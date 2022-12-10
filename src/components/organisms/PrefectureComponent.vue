@@ -97,7 +97,6 @@ onMounted(async () => {
         <h2>都道府県を選択</h2>
         <div class="pref-list">
             <PrefectureCheckbox
-                class="prefecture"
                 v-for="prefecture in prefectures"
                 :key="prefecture.prefCode"
                 :prefecture="prefecture"

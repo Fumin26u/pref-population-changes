@@ -24,16 +24,23 @@ const onSelectPrefecture = (pref: Pref): void => {
 }
 </script>
 <template>
-    <div class="checkbox-label-common">
-        <input
-            type="checkbox"
-            v-model="selectedPrefectures"
-            :value="prefecture"
-            :id="prefecture.prefId"
-            @click="onSelectPrefecture(prefecture)"
-        />
-        <label :for="prefecture.prefId">
-            {{ prefecture.prefName }}
-        </label>
+    <div class="prefecture">
+        <div
+            :class="[
+                selectedPrefectures.includes(prefecture) ? 'selected' : '',
+                'checkbox-label',
+            ]"
+        >
+            <input
+                type="checkbox"
+                v-model="selectedPrefectures"
+                :value="prefecture"
+                :id="prefecture.prefId"
+                @click="onSelectPrefecture(prefecture)"
+            />
+            <label :for="prefecture.prefId">
+                {{ prefecture.prefName }}
+            </label>
+        </div>
     </div>
 </template>
