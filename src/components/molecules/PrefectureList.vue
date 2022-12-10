@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import '@/assets/css/prefectures/prefecture.css'
+import '@/assets/css/organisms/prefecture.css'
 import { PrefInfo } from '@/assets/ts/interfaces/interfaces'
 import { toRefs } from 'vue'
 

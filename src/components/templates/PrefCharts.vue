@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import '@/assets/css/prefCharts.css'
+import '@/assets/css/templates/prefCharts.css'
 import HeaderComponent from '@/components/organisms/HeaderComponent.vue'
 import PrefectureComponent from '@/components/organisms/PrefectureComponent.vue'
 import ChartComponent from '@/components/organisms/ChartComponent.vue'

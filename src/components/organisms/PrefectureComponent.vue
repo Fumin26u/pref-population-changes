@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import '@/assets/css/prefectures/prefecture.css'
+import '@/assets/css/organisms/prefecture.css'
 import PrefectureList from '@/components/molecules/PrefectureList.vue'
 import endpoint from '@/assets/ts/endpoint'
 import getPrefInfo from '@/components/api/getPrefInfo'
 import { PrefInfo, PopulationInfo } from '@/assets/ts/interfaces/interfaces'
-import axios from '@/assets/plugins/setApiKey'
 import { ref, onMounted } from 'vue'
 
 interface Emits {
@@ -45,8 +44,8 @@ const getPushPrefInfoAt = (haystack: PrefInfo[], needle: PrefInfo): number => {
 // 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
 const onSelectPrefecture = async (pref: PrefInfo) => {
     const prefIndex = selectedPrefectures.value.indexOf(pref)
-    // checkboxで選択が解除された場合削除
     if (prefIndex !== -1) {
+        // checkboxで選択が解除された場合削除
         selectedPrefectures.value.splice(prefIndex, 1)
         prefPopulation.value.splice(prefIndex, 1)
     } else {
@@ -91,6 +90,7 @@ onMounted(async () => {
 
 <template>
     <section class="pref-area">
+        <h2>都道府県を選択</h2>
         <div class="pref-list">
             <PrefectureList
                 :prefectures="prefectures"
