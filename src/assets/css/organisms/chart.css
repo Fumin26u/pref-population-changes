@@ -1,6 +1,19 @@
 @import '../style.css';
 @media (min-width: 900px) {
     .chart-area {
-        width: 67%;
+        width: 66%;
     }
+}
+
+.chart-detail {
+    position: relative;
+    margin: 1em auto;
+}
+
+.chart-detail > .not-selected {
+    text-align: center;
+}
+.chart-detail > .not-selected p {
+    font-size: 18px;
+    color: #888;
 }

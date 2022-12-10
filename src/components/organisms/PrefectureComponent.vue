@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import '@/assets/css/organisms/prefecture.css'
-import PrefectureList from '@/components/molecules/PrefectureList.vue'
+import PrefectureCheckbox from '@/components/molecules/PrefectureCheckbox.vue'
 import endpoint from '@/assets/ts/endpoint'
 import getPrefInfo from '@/components/api/getPrefInfo'
 import {
@@ -48,6 +48,7 @@ const getPushPrefInfoAt = (haystack: Pref[], needle: Pref): number => {
 // 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
 const onSelectPrefecture = async (pref: Pref) => {
     const prefIndex = selectedPrefectures.value.indexOf(pref)
+    console.log(prefIndex)
     if (prefIndex !== -1) {
         // checkboxで選択が解除された場合削除
         selectedPrefectures.value.splice(prefIndex, 1)
@@ -60,7 +61,7 @@ const onSelectPrefecture = async (pref: Pref) => {
             pref
         )
         prefPopulation.value.splice(
-            getPushPrefInfoAt(selectedPrefectures.value, pref),
+            getPushPrefInfoAt(prefPopulation.value, pref),
             0,
             {
                 ...pref,
@@ -70,6 +71,7 @@ const onSelectPrefecture = async (pref: Pref) => {
     }
 
     emit('setPrefPopulation', prefPopulation.value)
+    console.log(selectedPrefectures.value)
 }
 
 // viewでlabelとinputの接続のためのidを作成する
@@ -96,8 +98,10 @@ onMounted(async () => {
     <section class="pref-area">
         <h2>都道府県を選択</h2>
         <div class="pref-list">
-            <PrefectureList
-                :prefectures="prefectures"
+            <PrefectureCheckbox
+                v-for="prefecture in prefectures"
+                :key="prefecture.prefCode"
+                :prefecture="prefecture"
                 :selectedPrefectures="selectedPrefectures"
                 @onSelectPrefecture="onSelectPrefecture"
             />

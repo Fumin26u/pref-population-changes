@@ -1,0 +1,42 @@
+@import '../organisms/prefecture.css';
+
+.checkbox-label {
+    cursor: pointer !important;
+    display: inline-block;   
+    background: hsl(196, 61%, 88%);
+    color: hsl(196, 100%, 10%);
+    box-shadow: 1.5px 1.5px hsl(196, 100%, 40%);
+    transition: all .1s;
+}
+.checkbox-label.selected {
+    background: hsl(196, 100%, 15%);
+    color: white;
+    box-shadow: inset 2px 2px 2px hsl(196, 100%, 5%);
+    transform: translate(1.5px, 1.5px);
+}
+
+.checkbox-label > input {
+    display: none;
+}
+.checkbox-label > label {
+    min-width: 80px;
+    padding: 2px 0;
+}
+
+
+.prefecture {
+    text-align: center;
+    width: 33%;
+}
+@media (min-width: 500px) and (max-width: 899px) {
+    .prefecture {
+        width: 25%;
+    }
+    .prefecture > .checkbox-label {
+        width: 100px;
+    }
+}
+
+.prefecture > .checkbox-label {
+    margin: 5px 0;
+}

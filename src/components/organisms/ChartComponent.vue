@@ -41,14 +41,15 @@ watchEffect(() => {
 </script>
 <template>
     <section class="chart-area">
-        <h2>都道府県の人口変化</h2>
-        <div>
+        <h2>選択した都道府県の年別人口変化</h2>
+        <div class="chart-detail">
             <VueHighcharts
+                class="chart"
                 v-if="prefPopulation.length > 0 && renderComponent"
                 type="chart"
                 :options="chartOptions"
             />
-            <div v-else>
+            <div v-else class="not-selected">
                 <p>都道府県が選択されていません。</p>
             </div>
         </div>
