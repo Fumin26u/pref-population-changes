@@ -35,11 +35,11 @@ const getPrefPopulation = async (
 }
 
 // 配列が都道府県コード順になるように該当の都道府県の挿入位置を取得する
-const getPushPrefInfoAt = (prefs: PrefInfo[], target: PrefInfo): number => {
-    const index = prefs.findIndex(
-        (prefInfo) => prefInfo.prefCode > target.prefCode
+const getPushPrefInfoAt = (haystack: PrefInfo[], needle: PrefInfo): number => {
+    const index = haystack.findIndex(
+        (stack) => stack.prefCode > needle.prefCode
     )
-    return index !== -1 ? index : prefs.length
+    return index !== -1 ? index : haystack.length
 }
 
 // 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
