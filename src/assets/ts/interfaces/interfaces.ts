@@ -15,7 +15,7 @@ export interface Pref {
 }
 
 export interface PrefInfo extends Pref {
-    population: PopulationInfo
+    population: PopulationInfo[]
 }
 
 export interface PrefCharts {
