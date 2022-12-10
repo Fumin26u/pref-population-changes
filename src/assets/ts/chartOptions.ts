@@ -1,9 +1,20 @@
 const chartOptions = {
+    chart: {
+        scrollablePlotArea: {
+            minWidth: 600,
+            scrollPositionX: 1,
+        },
+    },
     title: {
-        text: '都道府県の人口動態',
+        text: '',
     },
     xAxis: {
         categories: [...Array(18)].map((_, index) => 1960 + index * 5),
+        plotLines: [...Array(18)].map((_, index) => ({
+            value: index,
+            width: 1,
+            color: '#888',
+        })),
     },
     yAxis: {
         title: {
@@ -21,7 +32,7 @@ const chartOptions = {
         valueSuffix: '人',
     },
     legend: {
-        layout: 'vertical',
+        layout: 'horizontal',
         align: 'right',
         verticalAlign: 'middle',
         borderWidth: 0,
@@ -36,11 +47,10 @@ const chartOptions = {
         rules: [
             {
                 condition: {
-                    maxWidth: 600,
+                    maxWidth: 900,
                 },
                 chartOptions: {
                     legend: {
-                        layout: 'horizontal',
                         align: 'center',
                         verticalAlign: 'bottom',
                     },

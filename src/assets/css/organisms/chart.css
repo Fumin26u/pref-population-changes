@@ -11,10 +11,7 @@
 }
 
 .chart-detail > .not-selected {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    text-align: center;
 }
 .chart-detail > .not-selected p {
     font-size: 18px;
