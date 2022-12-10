@@ -28,9 +28,12 @@
     text-align: center;
     width: 33%;
 }
-@media (min-width: 480px) and (max-width: 900px) {
+@media (min-width: 500px) and (max-width: 899px) {
     .prefecture {
         width: 25%;
+    }
+    .prefecture > .checkbox-label {
+        width: 100px;
     }
 }
 

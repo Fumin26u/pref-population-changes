@@ -22,13 +22,14 @@
 }
         
 .pref-list {
+    user-select: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     border: 1px solid #888;
     padding: 4px 0;
-    max-height: 320px;
+    max-height: 300px;
     overflow-y: auto;
 }
 @media (min-width: 900px) {
@@ -49,7 +50,7 @@
 }
 .pref-list::before { order: 1; }
 
-@media (min-width: 480px) and (max-width: 900px) {
+@media (min-width: 480px) and (max-width: 899px) {
     .pref-list::before, .pref-list::after { 
         width: 25%;
     }
