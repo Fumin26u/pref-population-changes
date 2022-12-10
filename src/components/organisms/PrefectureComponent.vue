@@ -3,7 +3,11 @@ import '@/assets/css/organisms/prefecture.css'
 import PrefectureList from '@/components/molecules/PrefectureList.vue'
 import endpoint from '@/assets/ts/endpoint'
 import getPrefInfo from '@/components/api/getPrefInfo'
-import { PrefInfo, PopulationInfo } from '@/assets/ts/interfaces/interfaces'
+import {
+    Pref,
+    PrefInfo,
+    PopulationInfo,
+} from '@/assets/ts/interfaces/interfaces'
 import { ref, onMounted } from 'vue'
 
 interface Emits {
@@ -12,9 +16,9 @@ interface Emits {
 const emit = defineEmits<Emits>()
 
 // 都道府県一覧
-const prefectures = ref<PrefInfo[]>([])
+const prefectures = ref<Pref[]>([])
 // 選択された都道府県一覧
-const selectedPrefectures = ref<PrefInfo[]>([])
+const selectedPrefectures = ref<Pref[]>([])
 // 都道府県の人口情報
 const prefPopulation = ref<PrefInfo[]>([])
 
@@ -34,7 +38,7 @@ const getPrefPopulation = async (
 }
 
 // 配列が都道府県コード順になるように該当の都道府県の挿入位置を取得する
-const getPushPrefInfoAt = (haystack: PrefInfo[], needle: PrefInfo): number => {
+const getPushPrefInfoAt = (haystack: Pref[], needle: Pref): number => {
     const index = haystack.findIndex(
         (stack) => stack.prefCode > needle.prefCode
     )
@@ -42,7 +46,7 @@ const getPushPrefInfoAt = (haystack: PrefInfo[], needle: PrefInfo): number => {
 }
 
 // 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
-const onSelectPrefecture = async (pref: PrefInfo) => {
+const onSelectPrefecture = async (pref: Pref) => {
     const prefIndex = selectedPrefectures.value.indexOf(pref)
     if (prefIndex !== -1) {
         // checkboxで選択が解除された場合削除
@@ -69,15 +73,15 @@ const onSelectPrefecture = async (pref: PrefInfo) => {
 }
 
 // viewでlabelとinputの接続のためのidを作成する
-const setPrefId = (prefs: PrefInfo[]): PrefInfo[] => {
-    prefs.map((pref: PrefInfo, index: number) => {
+const setPrefId = (prefs: Pref[]): Pref[] => {
+    prefs.map((pref: Pref, index: number) => {
         prefs[index]['prefId'] = 'pref_' + pref.prefCode
     })
     return prefs
 }
 
 // APIから都道府県一覧を取得する
-const getPrefectures = async (): Promise<PrefInfo[]> => {
+const getPrefectures = async (): Promise<Pref[]> => {
     const url = endpoint + 'api/v1/prefectures'
     return await getPrefInfo(url)
 }

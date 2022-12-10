@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import '@/assets/css/organisms/prefecture.css'
-import { PrefInfo } from '@/assets/ts/interfaces/interfaces'
+import { Pref } from '@/assets/ts/interfaces/interfaces'
 import { toRefs } from 'vue'
 
 interface Props {
-    prefectures: PrefInfo[]
-    selectedPrefectures: PrefInfo[]
+    prefectures: Pref[]
+    selectedPrefectures: Pref[]
 }
 
 interface Emits {
-    (emit: 'onSelectPrefecture', pref: PrefInfo): void
+    (emit: 'onSelectPrefecture', pref: Pref): void
 }
 
 const props = defineProps<Props>()
@@ -19,7 +19,7 @@ const { prefectures } = toRefs(props)
 const { selectedPrefectures } = toRefs(props)
 
 // 都道府県の選択状態に変更があった場合、PrefectureComponentに選択した都道府県を送る
-const onSelectPrefecture = (pref: PrefInfo): void => {
+const onSelectPrefecture = (pref: Pref): void => {
     emit('onSelectPrefecture', pref)
 }
 </script>

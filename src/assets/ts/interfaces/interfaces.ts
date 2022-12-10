@@ -8,11 +8,14 @@ export interface PopulationInfo {
     data: PopulationByAge[]
 }
 
-export interface PrefInfo {
+export interface Pref {
     prefCode: number
     prefName: string
     prefId: string
-    population?: PopulationInfo[]
+}
+
+export interface PrefInfo extends Pref {
+    population: PopulationInfo[]
 }
 
 export interface PrefCharts {
