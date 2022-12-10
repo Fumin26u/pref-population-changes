@@ -1,0 +1,8 @@
+@import '../organisms/chart.css';
+
+.population-type-select > .radio-label {
+    display: inline-block;
+}
+.population-type-select > .radio-label > label {
+    margin-right: 8px;
+}
