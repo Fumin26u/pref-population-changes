@@ -18,7 +18,7 @@ const selectedPrefectures = ref<PrefInfo[]>([])
 const prefPopulation = ref<PrefInfo[]>([])
 
 // 都道府県データをコード順にソートしたものを取得
-const sortPrefCodeAsc = (prefs: PrefInfo[]): PrefInfo[] => {
+const sortByPrefCodeAsc = (prefs: PrefInfo[]): PrefInfo[] => {
     const sortedPrefs = prefs.sort((prev, next) => {
         return prev.prefCode > next.prefCode ? 1 : -1
     })
@@ -57,13 +57,13 @@ const onSelectPrefecture = async (pref: PrefInfo) => {
     } else {
         // 選択された場合人口情報と選択された都道府県一覧にデータを追加しソート
         selectedPrefectures.value.push(pref)
-        selectedPrefectures.value = sortPrefCodeAsc(selectedPrefectures.value)
+        selectedPrefectures.value = sortByPrefCodeAsc(selectedPrefectures.value)
 
         prefPopulation.value.push({
             ...pref,
             population: await getPrefPopulation(pref.prefCode),
         })
-        prefPopulation.value = sortPrefCodeAsc(prefPopulation.value)
+        prefPopulation.value = sortByPrefCodeAsc(prefPopulation.value)
     }
 
     emit('setPrefPopulation', prefPopulation.value)
