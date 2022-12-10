@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import '@/assets/css/organisms/prefecture.css'
+import '@/assets/css/molecules/prefectureList.css'
 import { Pref } from '@/assets/ts/interfaces/interfaces'
 import { toRefs } from 'vue'
 
 interface Props {
-    prefectures: Pref[]
+    prefecture: Pref
     selectedPrefectures: Pref[]
 }
 
@@ -15,7 +15,7 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { prefectures } = toRefs(props)
+const { prefecture } = toRefs(props)
 const { selectedPrefectures } = toRefs(props)
 
 // 都道府県の選択状態に変更があった場合、PrefectureComponentに選択した都道府県を送る
@@ -24,11 +24,7 @@ const onSelectPrefecture = (pref: Pref): void => {
 }
 </script>
 <template>
-    <div
-        class="prefecture"
-        v-for="prefecture in prefectures"
-        :key="prefecture.prefCode"
-    >
+    <div class="checkbox-label-common">
         <input
             type="checkbox"
             v-model="selectedPrefectures"

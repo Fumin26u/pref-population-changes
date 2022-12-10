@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import '@/assets/css/organisms/prefecture.css'
-import PrefectureList from '@/components/molecules/PrefectureList.vue'
+import PrefectureCheckbox from '@/components/molecules/PrefectureCheckbox.vue'
 import endpoint from '@/assets/ts/endpoint'
 import getPrefInfo from '@/components/api/getPrefInfo'
 import {
@@ -96,8 +96,11 @@ onMounted(async () => {
     <section class="pref-area">
         <h2>都道府県を選択</h2>
         <div class="pref-list">
-            <PrefectureList
-                :prefectures="prefectures"
+            <PrefectureCheckbox
+                class="prefecture"
+                v-for="prefecture in prefectures"
+                :key="prefecture.prefCode"
+                :prefecture="prefecture"
                 :selectedPrefectures="selectedPrefectures"
                 @onSelectPrefecture="onSelectPrefecture"
             />
