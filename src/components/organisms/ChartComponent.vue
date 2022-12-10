@@ -41,7 +41,7 @@ watchEffect(() => {
 </script>
 <template>
     <section class="chart-area">
-        <h2>都道府県の人口変化</h2>
+        <h2>選択した都道府県の年別人口変化</h2>
         <div class="chart-detail">
             <VueHighcharts
                 class="chart"
