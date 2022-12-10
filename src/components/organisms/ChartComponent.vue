@@ -41,6 +41,7 @@ watchEffect(() => {
 </script>
 <template>
     <section class="chart-area">
+        <h2>都道府県の人口変化</h2>
         <div>
             <VueHighcharts
                 v-if="prefPopulation.length > 0 && renderComponent"
