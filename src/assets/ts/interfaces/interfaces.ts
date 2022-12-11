@@ -22,3 +22,9 @@ export interface PrefCharts {
     name: string
     data: number[]
 }
+
+export interface TransferPrefInfo {
+    method: 'push' | 'remove'
+    index: number
+    prefInfo?: PrefInfo
+}

@@ -1,4 +1,6 @@
-const chartOptions = {
+// Highchart Componentのoptionsがany型なのでanyで指定
+// eslint-disable-next-line
+const chartOptions: any = {
     chart: {
         scrollablePlotArea: {
             minWidth: 600,
@@ -38,12 +40,7 @@ const chartOptions = {
         verticalAlign: 'middle',
         borderWidth: 0,
     },
-    series: [
-        {
-            name: '',
-            data: [0],
-        },
-    ],
+    series: [],
     responsive: {
         rules: [
             {

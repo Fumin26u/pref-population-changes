@@ -3,16 +3,21 @@ import '@/assets/css/organisms/chart.css'
 import chartOptions from '@/assets/ts/chartOptions'
 import PopulationTypes from '@/components/molecules/PopulationTypes.vue'
 import VueHighcharts from 'vue3-highcharts'
-import { PrefInfo, PrefCharts } from '@/assets/ts/interfaces/interfaces'
-import { ref, toRefs, watchEffect, nextTick } from 'vue'
+import {
+    TransferPrefInfo,
+    PrefInfo,
+    PrefCharts,
+} from '@/assets/ts/interfaces/interfaces'
+import { ref, toRefs, watch, nextTick } from 'vue'
 
 interface Props {
-    prefPopulation: PrefInfo[]
+    transferPrefInfo: TransferPrefInfo | undefined
 }
 const props = defineProps<Props>()
 
 // 都道府県人口情報
-const { prefPopulation } = toRefs(props)
+const { transferPrefInfo } = toRefs(props)
+const prefInfo = ref<PrefInfo[]>([])
 
 // 表示する人口の種類
 const populationType = ref<number>(0)
@@ -25,15 +30,13 @@ const setPopulationType = (popuType: { [key: string]: string }): void => {
 }
 
 // グラフ描画用の人口情報を生成
-const generatePrefCharts = (prefs: PrefInfo[], type: number): PrefCharts[] => {
-    return prefs.map((pref) => {
-        const populationList = pref.population[type].data.map((v) => v.value)
+const generatePrefCharts = (pref: PrefInfo, type: number): PrefCharts => {
+    const populationList = pref.population[type].data.map((v) => v.value)
 
-        return {
-            name: pref.prefName,
-            data: populationList,
-        }
-    })
+    return {
+        name: pref.prefName,
+        data: populationList,
+    }
 }
 
 // チャートを強制更新する
@@ -44,13 +47,36 @@ const forceRenderer = async () => {
     renderComponent.value = true
 }
 
-// 都道府県人口情報が更新された際チャートを更新
-watchEffect(() => {
-    chartOptions.series = generatePrefCharts(
-        prefPopulation.value,
-        populationType.value
+// 人口種別が変更された際既存のオプションをリセットして変更された種別の内容に変更
+watch(populationType, () => {
+    chartOptions.series = []
+    chartOptions.series = prefInfo.value.map((pref) =>
+        generatePrefCharts(pref, populationType.value)
     )
     forceRenderer()
+})
+
+// 都道府県情報の追加・削除が伝達された場合チャートオプションを更新
+watch(transferPrefInfo, () => {
+    const transfer = transferPrefInfo.value
+    if (transfer !== undefined) {
+        if (transfer.method === 'remove') {
+            prefInfo.value.splice(transfer.index, 1)
+            chartOptions.series.splice(transfer.index, 1)
+        } else if (
+            transfer.method === 'push' &&
+            transfer.prefInfo !== undefined
+        ) {
+            prefInfo.value.splice(transfer.index, 0, transfer.prefInfo)
+            chartOptions.series.splice(
+                transfer.index,
+                0,
+                generatePrefCharts(transfer.prefInfo, populationType.value)
+            )
+        }
+
+        forceRenderer()
+    }
 })
 </script>
 <template>
@@ -59,7 +85,7 @@ watchEffect(() => {
         <PopulationTypes @setPopulationType="setPopulationType" />
         <div
             class="chart-detail"
-            v-if="prefPopulation.length > 0 && renderComponent"
+            v-if="chartOptions.series.length > 0 && renderComponent"
         >
             <VueHighcharts class="chart" type="chart" :options="chartOptions" />
             <small class="caption">※2015年以降は推計値</small>

@@ -5,13 +5,13 @@ import endpoint from '@/assets/ts/endpoint'
 import getPrefInfo from '@/components/api/getPrefInfo'
 import {
     Pref,
-    PrefInfo,
     PopulationInfo,
+    TransferPrefInfo,
 } from '@/assets/ts/interfaces/interfaces'
 import { ref, onMounted } from 'vue'
 
 interface Emits {
-    (emit: 'setPrefPopulation', prefPopulations: PrefInfo[]): void
+    (emit: 'setPrefInfo', prefInfo: TransferPrefInfo): void
     (emit: 'setApiConnectionError', message: string): void
 }
 const emit = defineEmits<Emits>()
@@ -20,8 +20,6 @@ const emit = defineEmits<Emits>()
 const prefectures = ref<Pref[]>([])
 // 選択された都道府県一覧
 const selectedPrefectures = ref<Pref[]>([])
-// 都道府県の人口情報
-const prefPopulation = ref<PrefInfo[]>([])
 
 // API通信に失敗した場合、PrefChartsにエラーメッセージを送信
 const setApiConnectionError = (message: string): void => {
@@ -63,25 +61,24 @@ const onSelectPrefecture = async (pref: Pref): Promise<void> => {
     if (prefIndex !== -1) {
         // checkboxで選択が解除された場合削除
         selectedPrefectures.value.splice(prefIndex, 1)
-        prefPopulation.value.splice(prefIndex, 1)
+        emit('setPrefInfo', {
+            method: 'remove',
+            index: prefIndex,
+        })
     } else {
         // 選択された場合人口情報と選択都道府県一覧の指定位置にデータを追加
-        selectedPrefectures.value.splice(
-            getPushPrefInfoAt(selectedPrefectures.value, pref),
-            0,
-            pref
-        )
-        prefPopulation.value.splice(
-            getPushPrefInfoAt(prefPopulation.value, pref),
-            0,
-            {
+        const pushIndex = getPushPrefInfoAt(selectedPrefectures.value, pref)
+        selectedPrefectures.value.splice(pushIndex, 0, pref)
+        emit('setPrefInfo', {
+            method: 'push',
+            index: pushIndex,
+            prefInfo: {
                 ...pref,
                 population: await getPrefPopulation(pref.prefCode),
-            }
-        )
+            },
+        })
     }
 
-    emit('setPrefPopulation', prefPopulation.value)
     isPrefSelectable.value = true
 }
 
