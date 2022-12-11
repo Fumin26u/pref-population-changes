@@ -1,4 +1,5 @@
 // Highchart Componentのoptionsがany型なのでanyで指定
+// eslint-disable-next-line
 const chartOptions: any = {
     chart: {
         scrollablePlotArea: {
