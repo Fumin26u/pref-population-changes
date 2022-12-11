@@ -74,8 +74,9 @@ watch(transferPrefInfo, () => {
                 generatePrefCharts(transfer.prefInfo, populationType.value)
             )
         }
+
+        forceRenderer()
     }
-    forceRenderer()
 })
 </script>
 <template>
