@@ -3,16 +3,20 @@ import '@/assets/css/organisms/chart.css'
 import chartOptions from '@/assets/ts/chartOptions'
 import PopulationTypes from '@/components/molecules/PopulationTypes.vue'
 import VueHighcharts from 'vue3-highcharts'
-import { PrefInfo, PrefCharts } from '@/assets/ts/interfaces/interfaces'
+import {
+    TransferPrefInfo,
+    PrefInfo,
+    PrefCharts,
+} from '@/assets/ts/interfaces/interfaces'
 import { ref, toRefs, watchEffect, nextTick } from 'vue'
 
 interface Props {
-    prefPopulation: PrefInfo[]
+    prefInfo: TransferPrefInfo | undefined
 }
 const props = defineProps<Props>()
 
 // 都道府県人口情報
-const { prefPopulation } = toRefs(props)
+const { prefInfo } = toRefs(props)
 
 // 表示する人口の種類
 const populationType = ref<number>(0)

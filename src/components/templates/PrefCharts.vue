@@ -3,7 +3,7 @@ import '@/assets/css/templates/prefCharts.css'
 import HeaderComponent from '@/components/organisms/HeaderComponent.vue'
 import PrefectureComponent from '@/components/organisms/PrefectureComponent.vue'
 import ChartComponent from '@/components/organisms/ChartComponent.vue'
-import { PrefInfo } from '@/assets/ts/interfaces/interfaces'
+import { TransferPrefInfo } from '@/assets/ts/interfaces/interfaces'
 import { ref } from 'vue'
 
 // API通信成功の判定と表示用のエラーメッセージ
@@ -16,10 +16,10 @@ const setApiConnectionError = (message: string): void => {
 }
 
 // 都道府県の人口情報
-const prefPopulation = ref<PrefInfo[]>([])
+const transferPrefInfo = ref<TransferPrefInfo>()
 // PrefectureComponentから送られた都道府県の人口情報を設定
-const setPrefPopulation = (prefPopulations: PrefInfo[]): void => {
-    prefPopulation.value = prefPopulations
+const setPrefInfo = (prefInfo: TransferPrefInfo): void => {
+    transferPrefInfo.value = prefInfo
 }
 </script>
 
@@ -27,10 +27,10 @@ const setPrefPopulation = (prefPopulations: PrefInfo[]): void => {
     <HeaderComponent />
     <main class="main-content" v-if="isSuccessApiConnection">
         <PrefectureComponent
-            @setPrefPopulation="setPrefPopulation"
+            @setPrefInfo="setPrefInfo"
             @setApiConnectionError="setApiConnectionError"
         />
-        <ChartComponent :prefPopulation="prefPopulation" />
+        <ChartComponent :prefInfo="transferPrefInfo" />
     </main>
     <div v-else>
         <p>{{ apiConnectionErrorMessage }}</p>
