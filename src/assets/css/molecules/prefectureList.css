@@ -27,15 +27,17 @@
     width: 33%;
 }
 .prefecture > .checkbox-label {
-    width: 80px;
     margin: 5px 0;
+}
+.prefecture > .checkbox-label > label {
+    width: 80px;
 }
 
 @media (min-width: 500px) and (max-width: 899px) {
     .prefecture {
         width: 25%;
     }
-    .prefecture > .checkbox-label {
+    .prefecture > .checkbox-label > label {
         width: 100px;
     }
 }
