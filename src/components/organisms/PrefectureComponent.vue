@@ -12,6 +12,7 @@ import { ref, onMounted } from 'vue'
 
 interface Emits {
     (emit: 'setPrefPopulation', prefPopulations: PrefInfo[]): void
+    (emit: 'setApiConnectionError', message: string): void
 }
 const emit = defineEmits<Emits>()
 
@@ -21,6 +22,11 @@ const prefectures = ref<Pref[]>([])
 const selectedPrefectures = ref<Pref[]>([])
 // 都道府県の人口情報
 const prefPopulation = ref<PrefInfo[]>([])
+
+// API通信に失敗した場合、PrefChartsにエラーメッセージを送信
+const setApiConnectionError = (message: string): void => {
+    emit('setApiConnectionError', message)
+}
 
 // APIから指定された都道府県の人口情報を取得する
 const getPrefPopulation = async (
@@ -34,7 +40,8 @@ const getPrefPopulation = async (
         },
     })
 
-    return prefInfo.data
+    if (prefInfo.status === 'error') setApiConnectionError(prefInfo.content)
+    return prefInfo.content.data
 }
 
 // 配列が都道府県コード順になるように該当の都道府県の挿入位置を取得する
@@ -45,8 +52,13 @@ const getPushPrefInfoAt = (haystack: Pref[], needle: Pref): number => {
     return index !== -1 ? index : haystack.length
 }
 
+// 都道府県の選択の有効状態
+const isPrefSelectable = ref<boolean>(true)
 // 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
-const onSelectPrefecture = async (pref: Pref) => {
+// この処理が完了するまで都道府県の選択を無効にする
+const onSelectPrefecture = async (pref: Pref): Promise<void> => {
+    isPrefSelectable.value = false
+
     const prefIndex = selectedPrefectures.value.indexOf(pref)
     if (prefIndex !== -1) {
         // checkboxで選択が解除された場合削除
@@ -70,6 +82,7 @@ const onSelectPrefecture = async (pref: Pref) => {
     }
 
     emit('setPrefPopulation', prefPopulation.value)
+    isPrefSelectable.value = true
 }
 
 // viewでlabelとinputの接続のためのidを作成する
@@ -83,7 +96,10 @@ const setPrefId = (prefs: Pref[]): Pref[] => {
 // APIから都道府県一覧を取得する
 const getPrefectures = async (): Promise<Pref[]> => {
     const url = endpoint + 'api/v1/prefectures'
-    return await getPrefInfo(url)
+    const prefInfo = await getPrefInfo(url)
+
+    if (prefInfo.status === 'error') setApiConnectionError(prefInfo.content)
+    return await prefInfo.content
 }
 
 // 画面読み込み時、取得した都道府県一覧をRefオブジェクトに挿入
@@ -103,6 +119,7 @@ onMounted(async () => {
                 :selectedPrefectures="selectedPrefectures"
                 @onSelectPrefecture="onSelectPrefecture"
             />
+            <div class="select-disabled-cover" v-show="!isPrefSelectable"></div>
         </div>
     </section>
 </template>

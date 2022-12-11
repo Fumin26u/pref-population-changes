@@ -5,15 +5,19 @@
     }
 }
 
-.chart-detail {
+.chart-area > .chart-detail {
     position: relative;
     margin: 1em auto;
 }
+.chart-area > .chart-detail > .caption {
+    display: block;
+    text-align: right;
+}
 
-.chart-detail > .not-selected {
+.chart-area > .not-selected {
     text-align: center;
 }
-.chart-detail > .not-selected p {
+.chart-area > .not-selected p {
     font-size: 18px;
     color: #888;
 }

@@ -1,7 +1,6 @@
 @import '../organisms/prefecture.css';
 
 .checkbox-label {
-    cursor: pointer !important;
     display: inline-block;   
     background: hsl(196, 61%, 88%);
     color: hsl(196, 100%, 10%);

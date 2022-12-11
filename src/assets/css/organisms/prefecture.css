@@ -22,6 +22,7 @@
 }
         
 .pref-list {
+    position: relative;
     user-select: none;
     display: flex;
     justify-content: space-between;
@@ -54,4 +55,16 @@
     .pref-list::before, .pref-list::after { 
         width: 25%;
     }
+}
+
+/* 都道府県選択時のデータ取得処理終了までcheckboxを押させないためのカバー */
+.select-disabled-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    opacity: 0.3;
+    background-color: white;
 }
