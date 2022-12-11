@@ -1,6 +1,6 @@
 # 各都道府県の人口統計
 ## 使い方
-- url: https://pref-population-changes-j7j3.vercel.app/#/
+- url: https://pref-population-changes.vercel.app/#/
 - 画面左の都道府県一覧の青いボタン(チェックボックス)から都道府県を選択します(複数選択可)。
 - 選択した都道府県の人口が画面右にグラフで表示されます。
   - 表示されるのは1960年~2045年の5年ごとの人口で、2020年以降は推計値です。
