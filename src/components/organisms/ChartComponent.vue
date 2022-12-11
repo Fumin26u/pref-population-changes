@@ -17,6 +17,7 @@ const props = defineProps<Props>()
 
 // 都道府県人口情報
 const { transferPrefInfo } = toRefs(props)
+const prefInfo = ref<PrefInfo[]>([])
 
 // 表示する人口の種類
 const populationType = ref<number>(0)
@@ -38,19 +39,13 @@ const generatePrefCharts = (pref: PrefInfo, type: number): PrefCharts => {
     }
 }
 
-// チャートを強制更新する
-const renderComponent = ref<boolean>(true)
-const forceRenderer = async () => {
-    renderComponent.value = false
-    await nextTick()
-    renderComponent.value = true
-}
-
-// チャートのオプション追加・削除処理
+// チャートオプションと都道府県情報の追加・削除処理
 const setChartOptions = (transfer: TransferPrefInfo): void => {
     if (transfer.method === 'remove') {
+        prefInfo.value.splice(transfer.index, 1)
         chartOptions.series.splice(transfer.index, 1)
     } else if (transfer.method === 'push' && transfer.prefInfo !== undefined) {
+        prefInfo.value.splice(transfer.index, 0, transfer.prefInfo)
         chartOptions.series.splice(
             transfer.index,
             0,
@@ -59,12 +54,24 @@ const setChartOptions = (transfer: TransferPrefInfo): void => {
     }
 }
 
+// チャートを強制更新する
+const renderComponent = ref<boolean>(true)
+const forceRenderer = async () => {
+    renderComponent.value = false
+    await nextTick()
+    renderComponent.value = true
+}
+
 // 人口種別が変更された際既存のオプションをリセットして変更された種別の内容に変更
 watch(populationType, () => {
-    chartOptions.series
+    chartOptions.series = []
+    chartOptions.series = prefInfo.value.map((pref) =>
+        generatePrefCharts(pref, populationType.value)
+    )
+    forceRenderer()
 })
 
-// 都道府県人口情報が更新された際チャートを更新
+// 都道府県情報の追加・削除が伝達された場合チャートオプションを更新
 watch(transferPrefInfo, () => {
     if (transferPrefInfo.value !== undefined) {
         setChartOptions(transferPrefInfo.value)
