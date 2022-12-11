@@ -33,7 +33,6 @@ const getPrefPopulation = async (
             cityCode: '-',
         },
     })
-
     return prefInfo.data
 }
 
@@ -45,8 +44,13 @@ const getPushPrefInfoAt = (haystack: Pref[], needle: Pref): number => {
     return index !== -1 ? index : haystack.length
 }
 
+// 都道府県の選択の有効状態
+const isPrefSelectable = ref<boolean>(true)
 // 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
-const onSelectPrefecture = async (pref: Pref) => {
+// この処理が完了するまで都道府県の選択を無効にする
+const onSelectPrefecture = async (pref: Pref): Promise<void> => {
+    isPrefSelectable.value = false
+
     const prefIndex = selectedPrefectures.value.indexOf(pref)
     if (prefIndex !== -1) {
         // checkboxで選択が解除された場合削除
@@ -70,6 +74,7 @@ const onSelectPrefecture = async (pref: Pref) => {
     }
 
     emit('setPrefPopulation', prefPopulation.value)
+    isPrefSelectable.value = true
 }
 
 // viewでlabelとinputの接続のためのidを作成する
@@ -103,6 +108,7 @@ onMounted(async () => {
                 :selectedPrefectures="selectedPrefectures"
                 @onSelectPrefecture="onSelectPrefecture"
             />
+            <div class="select-disabled-cover" v-show="!isPrefSelectable"></div>
         </div>
     </section>
 </template>

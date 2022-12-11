@@ -4,6 +4,6 @@ import '@/assets/css/organisms/header.css'
 
 <template>
     <header>
-        <h1>各都道府県の年別人口変化</h1>
+        <h1>各都道府県の人口統計</h1>
     </header>
 </template>
