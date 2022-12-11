@@ -9,7 +9,7 @@ import { ref } from 'vue'
 // API通信成功の判定と表示用のエラーメッセージ
 const isSuccessApiConnection = ref<boolean>(true)
 const apiConnectionErrorMessage = ref<string>('')
-// 子コンポーネントでのAPI通信時にエラーが発生した場合エラーメッセージを画面表示させる
+// API通信時にエラーが発生した場合エラーメッセージを画面表示させる
 const setApiConnectionError = (message: string): void => {
     isSuccessApiConnection.value = false
     apiConnectionErrorMessage.value = message
