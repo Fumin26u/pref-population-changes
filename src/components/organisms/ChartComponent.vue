@@ -57,16 +57,15 @@ watchEffect(() => {
     <section class="chart-area">
         <h2>選択した都道府県の{{ populationName }}統計</h2>
         <PopulationTypes @setPopulationType="setPopulationType" />
-        <div class="chart-detail">
-            <VueHighcharts
-                class="chart"
-                v-if="prefPopulation.length > 0 && renderComponent"
-                type="chart"
-                :options="chartOptions"
-            />
-            <div v-else class="not-selected">
-                <p>都道府県が選択されていません。</p>
-            </div>
+        <div
+            class="chart-detail"
+            v-if="prefPopulation.length > 0 && renderComponent"
+        >
+            <VueHighcharts class="chart" type="chart" :options="chartOptions" />
+            <small class="caption">※2015年以降は推計値</small>
+        </div>
+        <div v-else class="not-selected">
+            <p>都道府県が選択されていません。</p>
         </div>
     </section>
 </template>
