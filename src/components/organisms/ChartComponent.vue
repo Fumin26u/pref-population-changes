@@ -15,15 +15,11 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-// 都道府県人口情報
-const { transferPrefInfo } = toRefs(props)
-const prefInfo = ref<PrefInfo[]>([])
-
-// 表示する人口の種類
+// 表示する人口の種別
 const populationType = ref<number>(0)
 const populationName = ref<string>('総人口')
 
-// 人口の種類のラジオボタンが変更された際、グラフとタイトルの表示を変更
+// 人口種別のラジオボタンが変更された際、グラフとタイトルの表示を変更
 const setPopulationType = (popuType: { [key: string]: string }): void => {
     populationType.value = parseInt(popuType.type)
     populationName.value = popuType.name
@@ -46,6 +42,10 @@ const forceRenderer = async () => {
     await nextTick()
     renderComponent.value = true
 }
+
+// 都道府県人口情報
+const { transferPrefInfo } = toRefs(props)
+const prefInfo = ref<PrefInfo[]>([])
 
 // 人口種別が変更された際既存のオプションをリセットして変更された種別の内容に変更
 watch(populationType, () => {

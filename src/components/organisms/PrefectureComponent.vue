@@ -16,11 +16,6 @@ interface Emits {
 }
 const emit = defineEmits<Emits>()
 
-// 都道府県一覧
-const prefectures = ref<Pref[]>([])
-// 選択された都道府県一覧
-const selectedPrefectures = ref<Pref[]>([])
-
 // API通信に失敗した場合、PrefChartsにエラーメッセージを送信
 const setApiConnectionError = (message: string): void => {
     emit('setApiConnectionError', message)
@@ -50,9 +45,14 @@ const getPushPrefInfoAt = (haystack: Pref[], needle: Pref): number => {
     return index !== -1 ? index : haystack.length
 }
 
+// 都道府県一覧
+const prefectures = ref<Pref[]>([])
+// 選択された都道府県一覧
+const selectedPrefectures = ref<Pref[]>([])
 // 都道府県の選択の有効状態
 const isPrefSelectable = ref<boolean>(true)
-// 都道府県の選択状態に変更があった場合、選択内容と人口動態内容を変更
+
+// 都道府県の選択状態に変更があった場合、都道府県情報を更新し選択内容をPrefChartsに送信
 // この処理が完了するまで都道府県の選択を無効にする
 const onSelectPrefecture = async (pref: Pref): Promise<void> => {
     isPrefSelectable.value = false
