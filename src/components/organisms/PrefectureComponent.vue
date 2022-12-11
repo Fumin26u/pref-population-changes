@@ -12,6 +12,7 @@ import { ref, onMounted } from 'vue'
 
 interface Emits {
     (emit: 'setPrefPopulation', prefPopulations: PrefInfo[]): void
+    (emit: 'setApiConnectionError', message: string): void
 }
 const emit = defineEmits<Emits>()
 
@@ -21,6 +22,11 @@ const prefectures = ref<Pref[]>([])
 const selectedPrefectures = ref<Pref[]>([])
 // 都道府県の人口情報
 const prefPopulation = ref<PrefInfo[]>([])
+
+// API通信に失敗した場合、PrefChartsにエラーメッセージを送信
+const setApiConnectionError = (message: string): void => {
+    emit('setApiConnectionError', message)
+}
 
 // APIから指定された都道府県の人口情報を取得する
 const getPrefPopulation = async (
@@ -33,7 +39,9 @@ const getPrefPopulation = async (
             cityCode: '-',
         },
     })
-    return prefInfo.data
+
+    if (prefInfo.status === 'error') setApiConnectionError(prefInfo.content)
+    return prefInfo.content.data
 }
 
 // 配列が都道府県コード順になるように該当の都道府県の挿入位置を取得する
@@ -88,7 +96,10 @@ const setPrefId = (prefs: Pref[]): Pref[] => {
 // APIから都道府県一覧を取得する
 const getPrefectures = async (): Promise<Pref[]> => {
     const url = endpoint + 'api/v1/prefectures'
-    return await getPrefInfo(url)
+    const prefInfo = await getPrefInfo(url)
+
+    if (prefInfo.status === 'error') setApiConnectionError(prefInfo.content)
+    return await prefInfo.content
 }
 
 // 画面読み込み時、取得した都道府県一覧をRefオブジェクトに挿入

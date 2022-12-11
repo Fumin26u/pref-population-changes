@@ -5,11 +5,17 @@ const getPrefInfo = async (url: string, config: object = {}) => {
     return await axios
         .get(url, config)
         .then((response) => {
-            return response.data.result
+            return {
+                status: 'success',
+                content: response.data.result,
+            }
         })
         .catch((error) => {
             console.log(error)
-            return '都道府県情報を取得できませんでした。'
+            return {
+                status: 'error',
+                content: '都道府県情報を取得できませんでした。',
+            }
         })
 }
 
