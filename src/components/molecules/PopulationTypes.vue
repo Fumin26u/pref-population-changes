@@ -27,6 +27,7 @@ const populationTypes = [
     },
 ]
 
+// 人口種別が変更された際ChartComponentに変更内容を送信
 watch(selectedType, () => {
     emit('setPopulationType', populationTypes[parseInt(selectedType.value)])
 })
