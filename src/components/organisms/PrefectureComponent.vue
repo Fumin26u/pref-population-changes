@@ -5,7 +5,6 @@ import endpoint from '@/assets/ts/endpoint'
 import getPrefInfo from '@/components/api/getPrefInfo'
 import {
     Pref,
-    PrefInfo,
     PopulationInfo,
     TransferPrefInfo,
 } from '@/assets/ts/interfaces/interfaces'
@@ -68,14 +67,11 @@ const onSelectPrefecture = async (pref: Pref): Promise<void> => {
         })
     } else {
         // 選択された場合人口情報と選択都道府県一覧の指定位置にデータを追加
-        selectedPrefectures.value.splice(
-            getPushPrefInfoAt(selectedPrefectures.value, pref),
-            0,
-            pref
-        )
+        const pushIndex = getPushPrefInfoAt(selectedPrefectures.value, pref)
+        selectedPrefectures.value.splice(pushIndex, 0, pref)
         emit('setPrefInfo', {
             method: 'push',
-            index: getPushPrefInfoAt(selectedPrefectures.value, pref),
+            index: pushIndex,
             prefInfo: {
                 ...pref,
                 population: await getPrefPopulation(pref.prefCode),

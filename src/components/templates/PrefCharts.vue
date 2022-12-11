@@ -30,7 +30,7 @@ const setPrefInfo = (prefInfo: TransferPrefInfo): void => {
             @setPrefInfo="setPrefInfo"
             @setApiConnectionError="setApiConnectionError"
         />
-        <ChartComponent :prefInfo="transferPrefInfo" />
+        <ChartComponent :transferPrefInfo="transferPrefInfo" />
     </main>
     <div v-else>
         <p>{{ apiConnectionErrorMessage }}</p>
