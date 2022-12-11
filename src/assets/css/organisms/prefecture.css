@@ -16,11 +16,7 @@
         border-right: 1px solid #888;
     }
 }
-
-.pref-selected p {
-    display: inline-block;
-}
-        
+ 
 .pref-list {
     position: relative;
     user-select: none;

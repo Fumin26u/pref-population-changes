@@ -1,5 +1,5 @@
 @import '../organisms/prefecture.css';
-
+/* ラベル付きチェックボックス共通設定 */
 .checkbox-label {
     display: inline-block;   
     background: hsl(196, 61%, 88%);
@@ -14,19 +14,23 @@
     transform: translate(1.5px, 1.5px);
 }
 
-.checkbox-label > input {
+.checkbox-label > input[type="checkbox"] {
     display: none;
 }
 .checkbox-label > label {
-    min-width: 80px;
     padding: 2px 0;
 }
 
-
+/* 都道府県一覧個別設定 */
 .prefecture {
     text-align: center;
     width: 33%;
 }
+.prefecture > .checkbox-label {
+    width: 80px;
+    margin: 5px 0;
+}
+
 @media (min-width: 500px) and (max-width: 899px) {
     .prefecture {
         width: 25%;
@@ -34,8 +38,4 @@
     .prefecture > .checkbox-label {
         width: 100px;
     }
-}
-
-.prefecture > .checkbox-label {
-    margin: 5px 0;
 }
