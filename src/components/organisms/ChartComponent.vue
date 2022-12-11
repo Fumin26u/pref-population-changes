@@ -39,21 +39,6 @@ const generatePrefCharts = (pref: PrefInfo, type: number): PrefCharts => {
     }
 }
 
-// チャートオプションと都道府県情報の追加・削除処理
-const setChartOptions = (transfer: TransferPrefInfo): void => {
-    if (transfer.method === 'remove') {
-        prefInfo.value.splice(transfer.index, 1)
-        chartOptions.series.splice(transfer.index, 1)
-    } else if (transfer.method === 'push' && transfer.prefInfo !== undefined) {
-        prefInfo.value.splice(transfer.index, 0, transfer.prefInfo)
-        chartOptions.series.splice(
-            transfer.index,
-            0,
-            generatePrefCharts(transfer.prefInfo, populationType.value)
-        )
-    }
-}
-
 // チャートを強制更新する
 const renderComponent = ref<boolean>(true)
 const forceRenderer = async () => {
@@ -73,8 +58,22 @@ watch(populationType, () => {
 
 // 都道府県情報の追加・削除が伝達された場合チャートオプションを更新
 watch(transferPrefInfo, () => {
-    if (transferPrefInfo.value !== undefined) {
-        setChartOptions(transferPrefInfo.value)
+    const transfer = transferPrefInfo.value
+    if (transfer !== undefined) {
+        if (transfer.method === 'remove') {
+            prefInfo.value.splice(transfer.index, 1)
+            chartOptions.series.splice(transfer.index, 1)
+        } else if (
+            transfer.method === 'push' &&
+            transfer.prefInfo !== undefined
+        ) {
+            prefInfo.value.splice(transfer.index, 0, transfer.prefInfo)
+            chartOptions.series.splice(
+                transfer.index,
+                0,
+                generatePrefCharts(transfer.prefInfo, populationType.value)
+            )
+        }
     }
     forceRenderer()
 })
