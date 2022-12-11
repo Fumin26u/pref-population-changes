@@ -88,7 +88,7 @@ watch(transferPrefInfo, () => {
             v-if="chartOptions.series.length > 0 && renderComponent"
         >
             <VueHighcharts class="chart" type="chart" :options="chartOptions" />
-            <small class="caption">※2015年以降は推計値</small>
+            <small class="caption">※2020年以降は推計値</small>
         </div>
         <div v-else class="not-selected">
             <p>都道府県が選択されていません。</p>
