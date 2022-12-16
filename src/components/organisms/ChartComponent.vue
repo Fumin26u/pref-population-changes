@@ -20,9 +20,11 @@ const populationType = ref<number>(0)
 const populationName = ref<string>('総人口')
 
 // 人口種別のラジオボタンが変更された際、グラフとタイトルの表示を変更
-const setPopulationType = (popuType: { [key: string]: string }): void => {
-    populationType.value = parseInt(popuType.type)
-    populationName.value = popuType.name
+const setPopulationType = (selectedPopulationType: {
+    [key: string]: string
+}): void => {
+    populationType.value = parseInt(selectedPopulationType.type)
+    populationName.value = selectedPopulationType.name
 }
 
 // グラフ描画用の人口情報を生成
