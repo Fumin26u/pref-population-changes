@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import '@/assets/css/organisms/prefecture.css'
 import PrefectureCheckbox from '@/components/molecules/PrefectureCheckbox.vue'
-import endpoint from '@/assets/ts/endpoint'
-import getPrefInfo from '@/components/api/getPrefInfo'
+import { getPrefInfo, getPopulationInfo } from '@/components/api/getPrefInfo'
 import {
     Pref,
     PopulationInfo,
@@ -25,8 +24,7 @@ const setApiConnectionError = (message: string): void => {
 const getPrefPopulation = async (
     prefCode: number
 ): Promise<PopulationInfo[]> => {
-    const url = endpoint + 'api/v1/population/composition/perYear'
-    const prefInfo = await getPrefInfo(url, {
+    const prefInfo = await getPopulationInfo({
         params: {
             prefCode: prefCode,
             cityCode: '-',
@@ -92,8 +90,7 @@ const setPrefId = (prefs: Pref[]): Pref[] => {
 
 // APIから都道府県一覧を取得する
 const getPrefectures = async (): Promise<Pref[]> => {
-    const url = endpoint + 'api/v1/prefectures'
-    const prefInfo = await getPrefInfo(url)
+    const prefInfo = await getPrefInfo()
 
     if (prefInfo.status === 'error') setApiConnectionError(prefInfo.content)
     return await prefInfo.content
