@@ -3,7 +3,10 @@ import '@/assets/css/molecules/populationTypes.css'
 import { ref, watch } from 'vue'
 
 interface Emits {
-    (emit: 'setPopulationType', popuType: { [key: string]: string }): void
+    (
+        emit: 'setPopulationType',
+        selectedPopulationType: { [key: string]: string }
+    ): void
 }
 const emit = defineEmits<Emits>()
 
